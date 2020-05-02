@@ -1,13 +1,13 @@
 
 <!DOCTYPE html>
-<?php  $conn = new mysqli("localhost","root","","abc");
+<?php  $conn = new mysqli("localhost","root","","bus");
   if($conn->connect_error){
     die("Failed to connect!".$conn->connect_error);
   }
 ?>
 <html>
 <head>
-<?php echo '<title>'.$_POST['searchBoxf'].' TO '.$_POST['searchBoxt'].' BUS TIMETABLE</title>'; ?>;
+<?php echo '<title>'.$_POST['searchBoxf'].' TO '.$_POST['searchBoxt'].' BUS TIMETABLE </title>'; ?>;
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
   <link rel='stylesheet' href='css/style.css'>
 </head>
@@ -30,12 +30,24 @@
 </table>
 </div>
 <?php
+  $n = 10;
+  if($n==1){
+    $q="SELECT * FROM route_1";
+    }
+  else{ // more than one 
+    $q="SELECT * FROM route_1 UNION ALL";
+    for($i=1;$i<$n;$i++){
+      $q=$q."SELECT * FROM route_".$i." UNION ALL";
+    }
+    $q=$q." SELECT * FROM route_".$n.
+?>
+<?php
   if(isset($_POST['submit'])){
     $resultf=$_POST['searchBoxf'];
     $resultt=$_POST['searchBoxt'];
-    $sql="SELECT * FROM bus_table WHERE BUS_ROUTE LIKE CONCAT('%', '%$resultf%', '%', '%$resultt%' '%') ORDER BY TIME ASC";
+    $sql="SELECT DISTINCT ROUTE_"$q".*,bus_table.* FROM bus_table, ROUTE_"$q" WHERE BUS_ROUTE LIKE CONCAT('%', '%$resultt%', '%', '%$resultf%' '%') AND BUS_STOP='$resultt'";
     $result=$conn->query($sql);
-    $result->num_rows > 1;
+    $result->num_rows > 0;
     while($row=$result->fetch_assoc()){
 
 
@@ -47,7 +59,7 @@
   <?php
 
     echo ('<tr>
-    <td width="6%">' .$row['TIME'].'</td>
+    <td width="6%">' .$row['STOP_TIMING'].'</td>
     <td width="10%">' .$row['ROUTE_NAME'].'</td>
     <td width="6%">' .$row['BUS_TYPE'].'</td>
     <td width="30%">' .$row['VIA_ROUTES'].'</td>
