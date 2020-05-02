@@ -1,13 +1,13 @@
 
 <!DOCTYPE html>
-<?php  $conn = new mysqli("localhost","root","","bus");
+<?php  $conn = new mysqli("localhost","root","","abc");
   if($conn->connect_error){
     die("Failed to connect!".$conn->connect_error);
   }
 ?>
 <html>
 <head>
-<?php echo '<title>'.$_POST['searchBoxf'].' TO '.$_POST['searchBoxt'].' BUS TIMETABLE </title>'; ?>;
+<?php echo '<title>'.$_POST['searchBoxf'].' TO '.$_POST['searchBoxt'].' BUS TIMETABLE</title>'; ?>;
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
   <link rel='stylesheet' href='css/style.css'>
 </head>
@@ -18,7 +18,7 @@
   <table cellpadding="0" cellspacing="0" border="0">
     <thead>
     <tr>
-      <th width="6%">BUS ID</th>
+      <th width="6%">TIME</th>
       <th width="10%">ROUTE NAME</th>
       <th width="6%">BUS TYPE</th>
       <th width="30%">VIA ROUTE</th>
@@ -33,7 +33,7 @@
   if(isset($_POST['submit'])){
     $resultf=$_POST['searchBoxf'];
     $resultt=$_POST['searchBoxt'];
-    $sql="SELECT * FROM bus_table WHERE BUS_ROUTE LIKE CONCAT('%', '%$resultf%', '%', '%$resultt%' '%') ORDER BY BUS_ID ASC";
+    $sql="SELECT * FROM bus_table WHERE BUS_ROUTE LIKE CONCAT('%', '%$resultf%', '%', '%$resultt%' '%') ORDER BY TIME ASC";
     $result=$conn->query($sql);
     $result->num_rows > 1;
     while($row=$result->fetch_assoc()){
@@ -47,7 +47,7 @@
   <?php
 
     echo ('<tr>
-    <td width="6%">' .$row['bus_table.BUS_ID'].'</td>
+    <td width="6%">' .$row['TIME'].'</td>
     <td width="10%">' .$row['ROUTE_NAME'].'</td>
     <td width="6%">' .$row['BUS_TYPE'].'</td>
     <td width="30%">' .$row['VIA_ROUTES'].'</td>

@@ -1,7 +1,7 @@
 <?php
 
 //build the connection variable and assign database credentials
-$conn = mysqli_connect('localhost','root','','bus');
+$conn = mysqli_connect('localhost','root','','abc');
 
 //if DB connection fails, get a error message
 if(!$conn){
