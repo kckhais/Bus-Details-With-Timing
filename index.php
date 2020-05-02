@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Autocomplete Search</title>
+    <style type="text/css">
+        body{
+            font-family: 'Roboto', sans-serif;
+            margin-top: 30px;
+            background-image: url('pics/back.jpg');
+        }
+        
+        h2 {
+            text-align: center;
+        }
+
+        .col-lg-6 input, li {
+            margin: 0 auto;
+            width: 300px;
+        }
+        .col-lg-6 label {
+            margin: 0 auto;
+            margin-top: 30px;
+            font-size: 20px;
+        }
+
+        ul li:hover {
+            cursor: pointer;
+            background-color: whitesmoke;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="col-lg-12">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <h2 style="margin-top: 100px;">Plan Your Journey</h2>L
+            <br>  
+            <form action="search.php" method="POST">
+                <center>
+                    <label>Search Source and Destination</label>
+                </center>
+                <br><br>
+                <input data-id="1" type="text"  id="searchBoxf" name="searchBoxf" class="form-control" autocomplete="off" placeholder="From" required="required">
+                <div id="resultf"></div><br>
+                 <input data-id="2" type="text" id="searchBoxt" name="searchBoxt" class="form-control" autocomplete="off" placeholder="To" required="required">
+                <div id="resultt"></div><br>
+                <center>
+                    <input type="submit" name="submit" value="Search" class="btn btn-info btn-lg rounded-0" style="width: 20%;">
+                </center>              
+            </form>   
+            <div class="success"></div>  
+
+        </div> 
+        <div class="col-lg-3"></div>    
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('.form-control').keyup(function(){
+               var click=$(this).data("id")
+                if(($(this).data("id"))==1) {
+                var query = $('#searchBoxf').val();
+                var id = "lif";
+                }
+                else{
+                var query = $('#searchBoxt').val();
+                var id = "lit";
+                }
+
+                if(query.length>0){
+                    $.ajax({
+                        url: "fetch.php",
+                        method: "POST",
+                        data: {
+                           search : 1,
+                           q: query ,
+                           id_pass:id
+                        },
+                        success:function(data){
+                            // (($(this).data("id"))==1) ? $('#resultf').html(data): $('#resultt').html(data)
+                            if(click==1){
+                             $('#resultf').html(data)
+                            }
+                            else{
+                                $('#resultt').html(data) 
+                            }
+
+
+                        },
+                        dataType: "text"
+                    });
+                }
+
+                if(click==1){
+                $(document).on('click', '#lif', function(){
+                var country = $(this).text();
+                $('#searchBoxf').val(country);
+                $('#resultf').html("");
+
+            });
+            }
+
+            else{
+                $(document).on('click', '#lit', function(){
+
+                var country = $(this).text();
+                $('#searchBoxt').val(country);
+                $('#resultt').html("");
+
+            });
+            }
+
+            });
+
+            // $('#searchBoxt').keyup(function(){
+            //     var query = $('#searchBoxt').val();
+            //     var id = "lit";
+            //     if(query.length>0){
+            //         $.ajax({
+            //             url: "fetch.php",
+            //             method: "POST",
+            //             data: {
+            //                search : 1,
+            //                q: query ,
+            //                id_pass:id
+            //             },
+            //             success:function(data){
+            //                 $('#resultt').html(data);
+            //             },
+            //             dataType: "text"
+            //         });
+            //     }
+            // });
+
+           
+
+            
+        });
+
+        
+
+    </script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>    
+</body>
+</html>
