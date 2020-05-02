@@ -39,13 +39,13 @@
     for($i=1;$i<$n;$i++){
       $q=$q."SELECT * FROM route_".$i." UNION ALL";
     }
-    $q=$q." SELECT * FROM route_".$n.
+    $q=$q." SELECT * FROM route_".$n;
 ?>
 <?php
   if(isset($_POST['submit'])){
     $resultf=$_POST['searchBoxf'];
     $resultt=$_POST['searchBoxt'];
-    $sql="SELECT DISTINCT ROUTE_"$q".*,bus_table.* FROM bus_table, ROUTE_"$q" WHERE BUS_ROUTE LIKE CONCAT('%', '%$resultt%', '%', '%$resultf%' '%') AND BUS_STOP='$resultt'";
+    $sql="SELECT DISTINCT ROUTE_".$q.".*,bus_table.* FROM bus_table, ROUTE_".$q." WHERE BUS_ROUTE LIKE CONCAT('%', '%$resultt%', '%', '%$resultf%' '%') AND BUS_STOP='$resultt'";
     $result=$conn->query($sql);
     $result->num_rows > 0;
     while($row=$result->fetch_assoc()){
