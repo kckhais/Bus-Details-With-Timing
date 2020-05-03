@@ -37,15 +37,15 @@
   else{ // more than one 
     $q="SELECT * FROM route_1 UNION ALL";
     for($i=1;$i<$n;$i++){
-      $q=$q."SELECT * FROM route_".$i." UNION ALL";
+      $q=$q."SELECT * FROM route_'.$i.' UNION ALL";
     }
-    $q=$q." SELECT * FROM route_".$n;
-?>
-<?php
+    $q=$q."SELECT * FROM route_".$n;
+  }
+
   if(isset($_POST['submit'])){
     $resultf=$_POST['searchBoxf'];
     $resultt=$_POST['searchBoxt'];
-    $sql="SELECT DISTINCT ROUTE_".$q.".*,bus_table.* FROM bus_table, ROUTE_".$q." WHERE BUS_ROUTE LIKE CONCAT('%', '%$resultt%', '%', '%$resultf%' '%') AND BUS_STOP='$resultt'";
+    $sql="SELECT DISTINCT  bus_table.* FROM bus_table WHERE bus_route LIKE CONCAT('%', '%$resultf%', '%', '%$resultt%' '%') ";
     $result=$conn->query($sql);
     $result->num_rows > 0;
     while($row=$result->fetch_assoc()){
@@ -59,7 +59,7 @@
   <?php
 
     echo ('<tr>
-    <td width="6%">' .$row['STOP_TIMING'].'</td>
+    <td width="6%">' .$row['BUS_ID'].'</td>
     <td width="10%">' .$row['ROUTE_NAME'].'</td>
     <td width="6%">' .$row['BUS_TYPE'].'</td>
     <td width="30%">' .$row['VIA_ROUTES'].'</td>
